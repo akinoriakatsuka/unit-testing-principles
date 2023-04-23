@@ -38,6 +38,7 @@ class ExampleTest extends TestCase
     {
         $store_mock = $this->createMock(Store::class);
         $store_mock->method('getInventory')->willReturn(10);
+        $store_mock->method('hasEnoughInventory')->willReturn(true);
         $customer = new Customer();
         $success = $customer->purchase($store_mock, Product::Shampoo, 5);
         assertTrue($success);
@@ -59,6 +60,7 @@ class ExampleTest extends TestCase
     {
         $store_mock = $this->createMock(Store::class);
         $store_mock->method('getInventory')->willReturn(3);
+        $store_mock->method('hasEnoughInventory')->willReturn(false);
         $customer = new Customer();
         $success = $customer->purchase($store_mock, Product::Shampoo, 5);
         assertFalse($success);

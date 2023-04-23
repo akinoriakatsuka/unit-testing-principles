@@ -9,10 +9,10 @@ class Customer extends Model
 {
     use HasFactory;
 
-    public function purchase(Store $store, Product $product, int $amount) : bool
+    public function purchase(Store $store, Product $product, int $amount): bool
     {
-        $inventory = $store->getInventory($product);
-        if($inventory >= $amount) {
+        // $inventory = $store->getInventory($product);
+        if ($store->hasEnoughInventory($product, $amount)) {
             $store->addInventory($product, $amount * (-1));
             return true;
         } else {
