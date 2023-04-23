@@ -34,6 +34,15 @@ class ExampleTest extends TestCase
         assertEquals(5, $store->GetInventory(Product::Shampoo));
     }
 
+    public function test_十分な在庫があれば購入が成功する_with_mock(): void
+    {
+        $store_mock = $this->createMock(Store::class);
+        $store_mock->method('GetInventory')->willReturn(10);
+        $customer = new Customer();
+        $success = $customer->Purchase($store_mock, Product::Shampoo, 5);
+        assertTrue($success);
+    }
+
     public function test_十分な在庫がなければ購入が失敗する(): void
     {
         $store = new Store();
@@ -45,4 +54,14 @@ class ExampleTest extends TestCase
         assertFalse($success);
         assertEquals(10, $store->GetInventory(Product::Shampoo));
     }
+
+    public function test_十分な在庫がなければ購入が失敗する_with_mock(): void
+    {
+        $store_mock = $this->createMock(Store::class);
+        $store_mock->method('GetInventory')->willReturn(3);
+        $customer = new Customer();
+        $success = $customer->Purchase($store_mock, Product::Shampoo, 5);
+        assertFalse($success);
+    }
+
 }
