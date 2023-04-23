@@ -11,7 +11,7 @@ class Store extends Model
 
     private $inventory = [];
 
-    public function AddInventory(Product $product,int $amount) : void {
+    public function addInventory(Product $product,int $amount) : void {
         if(isset($this->inventory[$product->name])) {
             $this->inventory[$product->name] += $amount;
         } else {
