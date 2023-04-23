@@ -13,7 +13,7 @@ class Customer extends Model
     {
         // $inventory = $store->getInventory($product);
         if ($store->hasEnoughInventory($product, $amount)) {
-            $store->addInventory($product, $amount * (-1));
+            $store->removeInventory($product, $amount);
             return true;
         } else {
             return false;
