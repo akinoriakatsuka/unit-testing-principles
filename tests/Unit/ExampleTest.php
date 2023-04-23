@@ -36,11 +36,12 @@ class ExampleTest extends TestCase
 
     public function test_十分な在庫があれば購入が成功する_with_mock(): void
     {
-        $store_mock = $this->createMock(Store::class);
-        $store_mock->method('getInventory')->willReturn(10);
-        $store_mock->method('hasEnoughInventory')->willReturn(true);
+        $store = $this->createMock(Store::class);
+        $store->method('getInventory')->willReturn(10);
+        $store->method('hasEnoughInventory')->willReturn(true);
         $customer = new Customer();
-        $success = $customer->purchase($store_mock, Product::Shampoo, 5);
+        $store->expects($this->once())->method('removeInventory');
+        $success = $customer->purchase($store, Product::Shampoo, 5);
         assertTrue($success);
     }
 
@@ -58,11 +59,12 @@ class ExampleTest extends TestCase
 
     public function test_十分な在庫がなければ購入が失敗する_with_mock(): void
     {
-        $store_mock = $this->createMock(Store::class);
-        $store_mock->method('getInventory')->willReturn(3);
-        $store_mock->method('hasEnoughInventory')->willReturn(false);
+        $store = $this->createMock(Store::class);
+        $store->method('getInventory')->willReturn(3);
+        $store->method('hasEnoughInventory')->willReturn(false);
         $customer = new Customer();
-        $success = $customer->purchase($store_mock, Product::Shampoo, 5);
+        $store->expects($this->never())->method('removeInventory');
+        $success = $customer->purchase($store, Product::Shampoo, 5);
         assertFalse($success);
     }
 
