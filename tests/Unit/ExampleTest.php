@@ -11,6 +11,7 @@ use function PHPUnit\Framework\assertFalse;
 use App\Models\Customer;
 use App\Models\Store;
 use App\Models\Product;
+use App\Models\Caluculator;
 
 class ExampleTest extends TestCase
 {
@@ -37,4 +38,14 @@ class ExampleTest extends TestCase
         assertFalse($success);
     }
 
+    public function test_足し算(): void
+    {
+        $first = 10.0;
+        $second = 20.0;
+        $caluculator = new Caluculator();
+
+        $result = $caluculator->sum($first, $second);
+        assertEquals(30.0,$result);
+
+    }
 }
