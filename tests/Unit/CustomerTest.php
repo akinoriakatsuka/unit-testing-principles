@@ -11,7 +11,7 @@ use App\Models\Customer;
 use App\Models\Store;
 use App\Models\Product;
 
-class ExampleTest extends TestCase
+class CustomerTest extends TestCase
 {
 
     public function test_十分な在庫があれば購入が成功する_古典(): void
