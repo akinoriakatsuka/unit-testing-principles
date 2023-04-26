@@ -22,7 +22,7 @@ class CalculatorTest extends TestCase
             [-1, 1, 0],
             [-1, -9, -10],
             [-1, -10, -11],
-            [-10, -10, 20], // failする
+            [-10, -10, -20],
         ];
     }
 
