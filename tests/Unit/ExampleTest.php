@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
 use function PHPUnit\Framework\assertFalse;
@@ -11,40 +10,53 @@ use function PHPUnit\Framework\assertFalse;
 use App\Models\Customer;
 use App\Models\Store;
 use App\Models\Product;
-use App\Models\Caluculator;
 
 class ExampleTest extends TestCase
 {
 
-    // public function test_十分な在庫があれば購入が成功する(): void
-    // {
-    //     $store = $this->createMock(Store::class);
-    //     $store->method('getInventory')->willReturn(10);
-    //     $store->method('hasEnoughInventory')->willReturn(true);
-    //     $customer = new Customer();
-    //     $store->expects($this->once())->method('removeInventory');
-    //     $success = $customer->purchase($store, Product::Shampoo, 5);
-    //     assertTrue($success);
-    // }
-
-    // public function test_十分な在庫がなければ購入が失敗する(): void
-    // {
-    //     $store = $this->createMock(Store::class);
-    //     $store->method('getInventory')->willReturn(3);
-    //     $store->method('hasEnoughInventory')->willReturn(false);
-    //     $customer = new Customer();
-    //     $store->expects($this->never())->method('removeInventory');
-    //     $success = $customer->purchase($store, Product::Shampoo, 5);
-    //     assertFalse($success);
-    // }
-
-    public function test_足し算(): void
+    public function test_十分な在庫があれば購入が成功する_古典(): void
     {
-        $first = 10.0;
-        $second = 20.0;
-        $sut = new Caluculator();
+        $store = new Store();
+        $store->addInventory(Product::Shampoo, 10);
+        $customer = new Customer();
 
-        $result = $sut->sum($first, $second);
-        assertEquals(30.0,$result);
+        $success = $customer->purchase($store, Product::Shampoo, 5);
+
+        assertTrue($success);
+        assertEquals(5, $store->getInventory(Product::Shampoo));
+    }
+
+    public function test_十分な在庫がなければ購入が失敗する_古典(): void
+    {
+        $store = new Store();
+        $store->addInventory(Product::Shampoo, 10);
+        $customer = new Customer();
+
+        $success = $customer->purchase($store, Product::Shampoo, 15);
+
+        assertFalse($success);
+        assertEquals(10, $store->getInventory(Product::Shampoo));
+    }
+
+    public function test_十分な在庫があれば購入が成功する_ロンドン(): void
+    {
+        $store = $this->createMock(Store::class);
+        $store->method('getInventory')->willReturn(10);
+        $store->method('hasEnoughInventory')->willReturn(true);
+        $customer = new Customer();
+        $store->expects($this->once())->method('removeInventory');
+        $success = $customer->purchase($store, Product::Shampoo, 5);
+        assertTrue($success);
+    }
+
+    public function test_十分な在庫がなければ購入が失敗する_ロンドン(): void
+    {
+        $store = $this->createMock(Store::class);
+        $store->method('getInventory')->willReturn(3);
+        $store->method('hasEnoughInventory')->willReturn(false);
+        $customer = new Customer();
+        $store->expects($this->never())->method('removeInventory');
+        $success = $customer->purchase($store, Product::Shampoo, 5);
+        assertFalse($success);
     }
 }
