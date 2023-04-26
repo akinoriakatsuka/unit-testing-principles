@@ -16,11 +16,10 @@ class CustomerTest extends TestCase
 
     public function test_十分な在庫があれば購入が成功する_古典(): void
     {
-        $store = new Store();
-        $store->addInventory(Product::Shampoo, 10);
-        $customer = new Customer();
+        $store = $this->createStoreWithInventory(Product::Shampoo,10);
+        $sut = $this::createCustomer();
 
-        $success = $customer->purchase($store, Product::Shampoo, 5);
+        $success = $sut->purchase($store, Product::Shampoo, 5);
 
         assertTrue($success);
         assertEquals(5, $store->getInventory(Product::Shampoo));
@@ -28,11 +27,10 @@ class CustomerTest extends TestCase
 
     public function test_十分な在庫がなければ購入が失敗する_古典(): void
     {
-        $store = new Store();
-        $store->addInventory(Product::Shampoo, 10);
-        $customer = new Customer();
+        $store = $this->createStoreWithInventory(Product::Shampoo,10);
+        $sut = $this::createCustomer();
 
-        $success = $customer->purchase($store, Product::Shampoo, 15);
+        $success = $sut->purchase($store, Product::Shampoo, 15);
 
         assertFalse($success);
         assertEquals(10, $store->getInventory(Product::Shampoo));
@@ -58,5 +56,15 @@ class CustomerTest extends TestCase
         $store->expects($this->never())->method('removeInventory');
         $success = $customer->purchase($store, Product::Shampoo, 5);
         assertFalse($success);
+    }
+
+    private function createStoreWithInventory(Product $product, int $amount) {
+        $store = new Store();
+        $store->addInventory($product,$amount);
+        return $store;
+    }
+
+    private static function createCustomer() : Customer {
+        return new Customer();
     }
 }
